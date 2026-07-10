@@ -1,0 +1,48 @@
+const mongoose = require("mongoose");
+
+const applicationSchema = new mongoose.Schema(
+  {
+    job: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+      required: true,
+    },
+
+    applicant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
+    coverLetter: {
+      type: String,
+      required: true,
+    },
+
+    resume: {
+      type: String,
+      default: "",
+    },
+
+    status: {
+      type: String,
+      enum: ["Pending", "Reviewed", "Accepted", "Rejected"],
+      default: "Pending",
+    },
+    profileImage: {
+      type: String,
+      default: "",
+    },
+
+    bio: {
+     type: String,
+      default: "",
+    },
+
+  },
+  {
+    timestamps: true,
+  }
+);
+
+module.exports = mongoose.model("Application", applicationSchema);

@@ -5,6 +5,8 @@ require("dotenv").config();
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const jobRoutes = require("./routes/jobRoutes");
+const applicationRoutes = require("./routes/applicationRoutes");
+const profileRoutes = require("./routes/profileRoutes");
 connectDB();
 
 const app = express();
@@ -13,6 +15,8 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
+app.use("/api/applications", applicationRoutes);
+app.use("/api/profiles", profileRoutes);
 
 app.get("/", (req, res) => {
     res.send("HireHub API is running 🚀");
