@@ -16,7 +16,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
-app.use("/api/profiles", profileRoutes);
+app.use("/api/profile", profileRoutes);
 
 app.get("/", (req, res) => {
     res.send("HireHub API is running 🚀");
