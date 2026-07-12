@@ -9,6 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const profileRoutes = require("./routes/profileRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 connectDB();
 
@@ -21,6 +22,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.get("/", (req, res) => {
     res.send("HireHub API is running 🚀");
