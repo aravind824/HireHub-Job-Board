@@ -2,15 +2,22 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-const uploadPath = path.join(__dirname, "..", "uploads", "resumes");
-
-// Create the folder automatically if it doesn't exist
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath, { recursive: true });
-}
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    let uploadPath;
+
+    if (file.fieldname === "resume") {
+      uploadPath = path.join(__dirname, "..", "uploads", "resumes");
+    } else if (file.fieldname === "profileImage") {
+      uploadPath = path.join(__dirname, "..", "uploads", "profiles");
+    } else {
+      return cb(new Error("Invalid file field"));
+    }
+
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+
     cb(null, uploadPath);
   },
 
@@ -23,11 +30,21 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "application/pdf") {
-    cb(null, true);
-  } else {
-    cb(new Error("Only PDF files are allowed"), false);
+  if (file.fieldname === "resume") {
+    if (file.mimetype === "application/pdf") {
+      return cb(null, true);
+    }
+    return cb(new Error("Only PDF resumes are allowed"), false);
   }
+
+  if (file.fieldname === "profileImage") {
+    if (file.mimetype.startsWith("image/")) {
+      return cb(null, true);
+    }
+    return cb(new Error("Only image files are allowed"), false);
+  }
+
+  cb(new Error("Invalid file field"), false);
 };
 
 module.exports = multer({

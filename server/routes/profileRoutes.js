@@ -6,9 +6,11 @@ const { protect } = require("../middleware/authMiddleware");
 
 const {
   uploadResume,
+  uploadProfileImage,
   getProfile,
   updateProfile,
 } = require("../controllers/profileController");
+
 
 // Upload Resume
 router.post(
@@ -17,6 +19,14 @@ router.post(
   upload.single("resume"),
   uploadResume
 );
+
+// Upload Profile Image
+router.post(
+  "/image",
+  protect,
+  upload.single("profileImage"),
+  uploadProfileImage
+);      
 
 // View Profile
 router.get("/", protect, getProfile);
