@@ -5,8 +5,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Jobs from "./pages/Jobs";
 import JobDetails from "./pages/JobDetails";
+import Profile from "./pages/Profile";
 import EmployerDashboard from "./pages/EmployerDashboard";
-import ApplicantDashboard from "./pages/ApplicantDashboard";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -14,16 +14,22 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/login" element={<Login />} />
+
         <Route path="/register" element={<Register />} />
 
-        {/* Optional routes for the pages you already created */}
         <Route path="/jobs" element={<Jobs />} />
-        <Route path="/jobs/:id" element={<JobDetails />} />
-        <Route path="/employer" element={<EmployerDashboard />} />
-        <Route path="/applicant" element={<ApplicantDashboard />} />
 
-        {/* 404 Page */}
+        <Route path="/jobs/:id" element={<JobDetails />} />
+
+        <Route path="/profile" element={<Profile />} />
+
+        <Route
+          path="/employer/dashboard"
+          element={<EmployerDashboard />}
+        />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

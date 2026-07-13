@@ -23,7 +23,14 @@ exports.protect = async (req, res, next) => {
     }
 
     // Verify token
+    console.log("========== AUTH DEBUG ==========");
+    console.log("Authorization Header:", req.headers.authorization);
+    console.log("Extracted Token:", token);
+    console.log("JWT Secret:", process.env.JWT_SECRET);
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    console.log("Decoded Token:", decoded);
 
     // Find user
     req.user = await User.findById(decoded.id).select("-password");
@@ -37,11 +44,13 @@ exports.protect = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(401).json({
-      success: false,
-      message: "Not authorized. Invalid token.",
-    });
-  }
+  console.log("JWT VERIFY ERROR:", error.message);
+
+  return res.status(401).json({
+    success: false,
+    message: "Not authorized. Invalid token.",
+  });
+}
 };
 
 // Role Authorization

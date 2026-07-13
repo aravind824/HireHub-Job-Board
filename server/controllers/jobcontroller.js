@@ -1,5 +1,6 @@
 const Job = require("../models/Job");
 
+
 exports.createJob = async (req, res) => {
   try {
     const job = await Job.create({
@@ -24,11 +25,87 @@ exports.createJob = async (req, res) => {
 
 exports.getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find().populate("postedBy", "name email");
+    // Search & Filter
+    const keyword = req.query.keyword || "";
+    const location = req.query.location || "";
+    const company = req.query.company || "";
+    const jobType = req.query.jobType || "";
+
+    const minSalary = Number(req.query.minSalary) || 0;
+    const maxSalary = Number(req.query.maxSalary) || Number.MAX_SAFE_INTEGER;
+
+    // Pagination
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 5;
+
+    // Sorting
+    const sort = req.query.sort || "newest";
+
+    let sortOption = {};
+
+    switch (sort) {
+      case "newest":
+        sortOption = { createdAt: -1 };
+        break;
+      case "oldest":
+        sortOption = { createdAt: 1 };
+        break;
+      case "salary-high":
+        sortOption = { salary: -1 };
+        break;
+      case "salary-low":
+        sortOption = { salary: 1 };
+        break;
+      default:
+        sortOption = { createdAt: -1 };
+    }
+
+    // MongoDB Query
+    const query = {};
+
+    if (keyword) {
+      query.title = {
+        $regex: keyword,
+        $options: "i",
+      };
+    }
+
+    if (location) {
+      query.location = {
+        $regex: location,
+        $options: "i",
+      };
+    }
+
+    if (company) {
+      query.company = {
+        $regex: company,
+        $options: "i",
+      };
+    }
+
+    if (jobType) {
+      query.jobType = jobType;
+    }
+
+    query.salary = {
+      $gte: minSalary,
+      $lte: maxSalary,
+    };
+
+    const totalJobs = await Job.countDocuments(query);
+
+    const jobs = await Job.find(query)
+      .populate("postedBy", "name email")
+      .sort(sortOption)
+      .skip((page - 1) * limit)
+      .limit(limit);
 
     res.status(200).json({
       success: true,
-      count: jobs.length,
+      currentPage: page,
+      totalPages: Math.ceil(totalJobs / limit),
+      totalJobs,
       jobs,
     });
   } catch (error) {
@@ -38,6 +115,8 @@ exports.getAllJobs = async (req, res) => {
     });
   }
 };
+   
+
 
 
 exports.getJobById = async (req, res) => {

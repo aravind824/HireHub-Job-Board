@@ -3,12 +3,10 @@ const Job = require("../models/Job");
 
 // Job Seeker applies for a job
 exports.applyJob = async (req, res) => {
-    exports.applyJob = async (req, res) => {
   try {
     const { coverLetter } = req.body;
     const { jobId } = req.params;
 
-    // Find the job
     const job = await Job.findById(jobId);
 
     if (!job) {
@@ -18,7 +16,7 @@ exports.applyJob = async (req, res) => {
       });
     }
 
-    // Employer cannot apply to their own job
+    // Employer cannot apply to own job
     if (job.postedBy.toString() === req.user.id) {
       return res.status(400).json({
         success: false,
@@ -26,7 +24,7 @@ exports.applyJob = async (req, res) => {
       });
     }
 
-    // Check if already applied
+    // Already applied?
     const existingApplication = await Application.findOne({
       job: jobId,
       applicant: req.user.id,
@@ -39,7 +37,6 @@ exports.applyJob = async (req, res) => {
       });
     }
 
-    // Create application
     const application = await Application.create({
       job: jobId,
       applicant: req.user.id,
@@ -51,7 +48,6 @@ exports.applyJob = async (req, res) => {
       message: "Application submitted successfully",
       application,
     });
-
   } catch (error) {
     console.error(error);
 
@@ -62,11 +58,8 @@ exports.applyJob = async (req, res) => {
   }
 };
 
-};
-
-// Employer views applicants for a job
-exports.getApplicants = async (req, res) => {
-    exports.getMyApplications = async (req, res) => {
+// Job Seeker views their applications
+exports.getMyApplications = async (req, res) => {
   try {
     const applications = await Application.find({
       applicant: req.user.id,
@@ -89,15 +82,11 @@ exports.getApplicants = async (req, res) => {
   }
 };
 
-};
-
-// Job Seeker views their applications
-exports.getMyApplications = async (req, res) => {
-    exports.getApplicants = async (req, res) => {
+// Employer views applicants
+exports.getApplicants = async (req, res) => {
   try {
     const { jobId } = req.params;
 
-    // Check if job exists
     const job = await Job.findById(jobId);
 
     if (!job) {
@@ -107,7 +96,6 @@ exports.getMyApplications = async (req, res) => {
       });
     }
 
-    // Only the employer who posted the job can view applicants
     if (job.postedBy.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
@@ -126,7 +114,6 @@ exports.getMyApplications = async (req, res) => {
       count: applications.length,
       applications,
     });
-
   } catch (error) {
     console.error(error);
 
@@ -137,17 +124,13 @@ exports.getMyApplications = async (req, res) => {
   }
 };
 
-};
-
 // Employer updates application status
 exports.updateApplicationStatus = async (req, res) => {
-    exports.updateApplicationStatus = async (req, res) => {
   try {
     const { applicationId } = req.params;
     const { status } = req.body;
 
-    const application = await Application.findById(applicationId)
-      .populate("job");
+    const application = await Application.findById(applicationId).populate("job");
 
     if (!application) {
       return res.status(404).json({
@@ -156,7 +139,6 @@ exports.updateApplicationStatus = async (req, res) => {
       });
     }
 
-    // Only the employer who created the job can update the status
     if (application.job.postedBy.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
@@ -165,7 +147,6 @@ exports.updateApplicationStatus = async (req, res) => {
     }
 
     application.status = status;
-
     await application.save();
 
     res.status(200).json({
@@ -173,7 +154,6 @@ exports.updateApplicationStatus = async (req, res) => {
       message: "Application status updated successfully",
       application,
     });
-
   } catch (error) {
     console.error(error);
 
@@ -182,6 +162,4 @@ exports.updateApplicationStatus = async (req, res) => {
       message: "Server Error",
     });
   }
-};
-
 };
