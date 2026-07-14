@@ -1,12 +1,19 @@
 const Job = require("../models/Job");
 const Application = require("../models/Application");
 
-
 // Employer Dashboard
 exports.getEmployerDashboard = async (req, res) => {
   try {
-    // Find all jobs posted by the logged-in employer
+    // Debug Logs
+    console.log("=================================");
+    console.log("Logged in Employer ID:", req.user.id);
+
+    // Find all jobs posted by this employer
     const jobs = await Job.find({ postedBy: req.user.id });
+
+    console.log("Jobs Found:", jobs.length);
+    console.log(jobs);
+    console.log("=================================");
 
     const dashboard = [];
 
@@ -31,7 +38,7 @@ exports.getEmployerDashboard = async (req, res) => {
       jobs: dashboard,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Dashboard Error:", error);
 
     res.status(500).json({
       success: false,
@@ -43,17 +50,14 @@ exports.getEmployerDashboard = async (req, res) => {
 // Dashboard Statistics
 exports.getDashboardStats = async (req, res) => {
   try {
-    // Get all jobs posted by this employer
     const jobs = await Job.find({ postedBy: req.user.id });
 
     const jobIds = jobs.map((job) => job._id);
 
-    // Total applications
     const totalApplications = await Application.countDocuments({
       job: { $in: jobIds },
     });
 
-    // Status counts
     const pending = await Application.countDocuments({
       job: { $in: jobIds },
       status: "Pending",
@@ -86,7 +90,7 @@ exports.getDashboardStats = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
+    console.error("Stats Error:", error);
 
     res.status(500).json({
       success: false,

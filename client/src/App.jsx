@@ -8,6 +8,9 @@ import JobDetails from "./pages/JobDetails";
 import Profile from "./pages/Profile";
 import EmployerDashboard from "./pages/EmployerDashboard";
 import NotFound from "./pages/NotFound";
+import Applicants from "./pages/Applicants";
+import PostJob from "./pages/PostJob";
+
 
 function App() {
   return (
@@ -28,6 +31,13 @@ function App() {
         <Route
           path="/employer/dashboard"
           element={<EmployerDashboard />}
+        />
+
+        <Route path="/employer/post-job" element={<PostJob />} />
+
+        <Route
+          path="/employer/applicants/:jobId"
+          element={<Applicants />}
         />
 
         <Route path="*" element={<NotFound />} />

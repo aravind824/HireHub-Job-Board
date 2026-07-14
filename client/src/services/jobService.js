@@ -6,6 +6,9 @@ export const getAllJobs = (params) =>
 export const getJobById = (id) =>
   api.get(`/jobs/${id}`);
 
+export const createJob = (data) =>
+  api.post("/jobs", data);
+
 export const applyJob = (jobId) =>
   api.post(
     `/applications/${jobId}`,
