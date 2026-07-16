@@ -26,6 +26,16 @@ const userSchema = new mongoose.Schema(
       default: "jobseeker",
     },
 
+    phone: {
+    type: String,
+    },
+
+    location: {
+    type: String,
+    },
+
+
+
     skills: {
       type: [String],
       default: [],
@@ -34,6 +44,15 @@ const userSchema = new mongoose.Schema(
     resume: {
       type: String,
       default: "",
+    },
+
+    profilePic: {
+      type: String,
+    },
+
+    bio: {
+      type: String,
+    default: "",
     },
   },
   {

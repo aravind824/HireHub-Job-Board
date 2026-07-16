@@ -163,3 +163,25 @@ exports.updateApplicationStatus = async (req, res) => {
     });
   }
 };
+//Exports Get Application By Job Status
+exports.getApplicantsByJob = async (req, res) => {
+  try {
+    const applications = await Application.find({
+      job: req.params.jobId,
+    })
+      .populate("applicant", "name email")
+      .populate("job", "title");
+
+    res.status(200).json({
+      success: true,
+      applications,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
