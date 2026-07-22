@@ -4,6 +4,10 @@ const cors = require("cors");
 
 require("dotenv").config();
 
+console.log("Starting HireHub...");
+console.log("MONGO_URI:", process.env.MONGO_URI ? "Found" : "Missing");
+console.log("JWT_SECRET:", process.env.JWT_SECRET ? "Found" : "Missing");
+
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const jobRoutes = require("./routes/jobRoutes");
@@ -12,6 +16,10 @@ const profileRoutes = require("./routes/profileRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const userRoutes = require("./routes/userRoutes");
 
+
+
+
+console.log("Connecting to MongoDB...");
 connectDB();
 
 const app = express();
@@ -35,3 +43,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
