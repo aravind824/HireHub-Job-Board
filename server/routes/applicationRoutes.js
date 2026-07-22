@@ -9,7 +9,7 @@ const {
   getApplicantsByJob,
   getMyApplications,
   updateApplicationStatus,
-  getApplicationByJob,
+  
 } = require("../controllers/applicationController");
 
 

@@ -53,3 +53,74 @@ exports.updateProfile = async (req, res) => {
     });
   }
 };
+
+exports.uploadResume = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Please upload a PDF file",
+      });
+    }
+
+    user.resume = `/uploads/resumes/${req.file.filename}`;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Resume Uploaded Successfully",
+      user,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+exports.uploadProfilePicture = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Please upload an image",
+      });
+    }
+
+    user.profilePicture = `/uploads/profiles/${req.file.filename}`;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Profile picture uploaded successfully",
+      profilePicture: user.profilePicture,
+      user,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
