@@ -10,6 +10,7 @@ import EmployerDashboard from "./pages/EmployerDashboard";
 import NotFound from "./pages/NotFound";
 import Applicants from "./pages/Applicants";
 import PostJob from "./pages/PostJob";
+import MyApplications from "./pages/MyApplications";
 
 
 function App() {
@@ -34,6 +35,11 @@ function App() {
         />
 
         <Route path="/employer/post-job" element={<PostJob />} />
+
+        <Route
+          path="/my-applications"
+          element={<MyApplications />}
+        />
 
         <Route
           path="/employer/applicants/:jobId"

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { createJob } from "../services/jobService";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function PostJob() {
   const navigate = useNavigate();
@@ -36,6 +38,9 @@ export default function PostJob() {
   };
 
   return (
+    <>
+    <Navbar />
+
     <div className="max-w-2xl mx-auto p-8">
       <h1 className="text-3xl font-bold mb-6">Post New Job</h1>
 
@@ -94,5 +99,7 @@ export default function PostJob() {
 
       </form>
     </div>
+    <Footer />
+    </>
   );
 }

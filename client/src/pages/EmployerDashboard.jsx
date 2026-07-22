@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import {
   getEmployerDashboard,
   getDashboardStats,
@@ -30,6 +32,9 @@ export default function EmployerDashboard() {
   }
 
   return (
+    <>
+    <Navbar />
+
     <div style={{ padding: "30px" }}>
       <h1>Employer Dashboard</h1>
 
@@ -90,12 +95,26 @@ export default function EmployerDashboard() {
             <p>Applications: {job.applications}</p>
 
             <Link to={`/employer/applicants/${job.jobId}`}>
-              <button>View Applicants</button>
-            </Link>
+                <button
+                    style={{
+                        marginTop: "10px",
+                        padding: "8px 15px",
+                        background: "#2563eb",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                }}
+            >
+                View Applicants
+            </button>
+        </Link>
           </div>
         ))
       )}
     </div>
+    <Footer />
+    </>
   );
 }
 

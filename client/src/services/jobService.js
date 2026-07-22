@@ -19,3 +19,6 @@ export const applyJob = (jobId) =>
       },
     }
   );
+
+  export const getApplicants = (jobId) =>
+  api.get(`/applications/job/${jobId}`);
